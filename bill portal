@@ -1,0 +1,222 @@
+Project: Electricity Bill Payment Portal (Next.js)
+
+📌 Project Overview
+
+A web app where users can:
+
+	•	Register/Login
+
+	•	View electricity bills (with due date, units consumed, amount)
+
+	•	Pay bills (mock payment)
+
+	•	View payment history
+
+	•	Get alerts for pending bills
+
+⸻
+
+🎯 Core Features
+
+👤 Authentication
+
+	•	User Sign Up / Login (NextAuth or JWT)
+
+	•	Role-based (User/Admin)
+
+🧾 Bills
+
+	•	User:
+
+	•	See current bill details (units consumed, due date, total amount)
+
+	•	Make mock payment (via Razorpay test mode OR fake UPI modal)
+
+	•	Download receipt as PDF
+
+	•	Admin:
+
+	•	Add / Update user bills
+
+	•	View all users’ payments
+
+💳 Payments
+
+	•	Mock payment flow (don’t integrate real gateways, just simulate success/fail).
+
+📜 History
+
+	•	User can see all past bills & payments
+
+⸻
+
+🎨 UI/UX Suggestions
+
+	•	Framework: TailwindCSS + DaisyUI / ShadCN UI
+
+	•	Pages:
+
+	•	/login → Login page
+
+	•	/dashboard → User dashboard showing current bill & payment button
+
+	•	/history → User’s past bills & payment receipts
+
+	•	/admin → Admin portal to manage bills
+
+⚡ Keep it clean:
+
+	•	Sidebar navigation
+
+	•	Cards for bills
+
+	•	Table for payment history
+
+⸻
+
+🛠️ Tech Stack
+
+	•	Frontend: Next.js 14 (App Router), TailwindCSS, ShadCN
+
+	•	Backend: Next.js API Routes (mock DB using Prisma + SQLite)
+
+	•	Auth: NextAuth.js
+
+	•	DB: SQLite / PostgreSQL (Prisma ORM)
+
+	•	Testing: Playwright (unit + E2E)
+
+Project: Electricity Bill Payment Portal (Next.js)
+
+📌 Project Overview
+
+A web app where users can:
+
+	•	Register/Login
+
+	•	View electricity bills (with due date, units consumed, amount)
+
+	•	Pay bills (mock payment)
+
+	•	View payment history
+
+	•	Get alerts for pending bills
+
+⸻
+
+🎯 Core Features
+
+👤 Authentication
+
+	•	User Sign Up / Login (NextAuth or JWT)
+
+	•	Role-based (User/Admin)
+
+🧾 Bills
+
+	•	User:
+
+	•	See current bill details (units consumed, due date, total amount)
+
+	•	Make mock payment (via Razorpay test mode OR fake UPI modal)
+
+	•	Download receipt as PDF
+
+	•	Admin:
+
+	•	Add / Update user bills
+
+	•	View all users’ payments
+
+💳 Payments
+
+	•	Mock payment flow (don’t integrate real gateways, just simulate success/fail).
+
+📜 History
+
+	•	User can see all past bills & payments
+
+⸻
+
+🎨 UI/UX Suggestions
+
+	•	Framework: TailwindCSS + DaisyUI / ShadCN UI
+
+	•	Pages:
+
+	•	/login → Login page
+
+	•	/dashboard → User dashboard showing current bill & payment button
+
+	•	/history → User’s past bills & payment receipts
+
+	•	/admin → Admin portal to manage bills
+
+⚡ Keep it clean:
+
+	•	Sidebar navigation
+
+	•	Cards for bills
+
+	•	Table for payment history
+
+⸻
+
+🛠️ Tech Stack
+
+	•	Frontend: Next.js 14 (App Router), TailwindCSS, ShadCN
+
+	•	Backend: Next.js API Routes (mock DB using Prisma + SQLite)
+
+	•	Auth: NextAuth.js
+
+	•	DB: SQLite / PostgreSQL (Prisma ORM)
+
+	•	Testing: Playwright (unit + E2E)
+ 
+electricity-bill-portal/
+
+│── app/
+
+│   ├── login/page.tsx
+
+│   ├── dashboard/page.tsx
+
+│   ├── history/page.tsx
+
+│   ├── admin/page.tsx
+
+│── components/
+
+│   ├── BillCard.tsx
+
+│   ├── PaymentModal.tsx
+
+│   ├── Navbar.tsx
+
+│── lib/
+
+│   ├── prisma.ts
+
+│   ├── auth.ts
+
+│── pages/api/
+
+│   ├── bills.ts
+
+│   ├── payment.ts
+
+│── prisma/
+
+│   ├── schema.prisma
+
+│── tests/
+
+│   ├── bill.spec.ts
+
+│   ├── payment.spec.ts
+
+│── package.json
+
+│── playwright.config.ts
+ 
