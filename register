@@ -11,6 +11,8 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,23 +20,24 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
 
     try {
-      // 1️⃣ Fetch existing users
+      // Fetch existing users to check duplicates
       const existingUsersRes = await fetch("http://localhost:5000/users");
       const existingUsers = await existingUsersRes.json();
 
-      // 2️⃣ Check if email already exists
       const emailExists = existingUsers.some(
         (user: any) => user.email === formData.email
       );
 
       if (emailExists) {
-        alert("Email already registered. Please use another email.");
+        setError("Email already registered. Please use another email.");
         return;
       }
 
-      // 3️⃣ Save new user
+      // Register new user
       const res = await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: {
@@ -44,14 +47,18 @@ export default function Register() {
       });
 
       if (res.ok) {
-        alert("Registration successful!");
-        router.push("/dashboard"); // Redirect to dashboard
+        const newUser = await res.json();
+        localStorage.setItem("user", JSON.stringify(newUser)); // store user in localStorage
+        setSuccess("Registration successful! Redirecting to dashboard...");
+        setTimeout(() => {
+          router.push("/dashboard"); // redirect
+        }, 1000);
       } else {
-        alert("Failed to register. Try again.");
+        setError("Failed to register. Try again.");
       }
     } catch (err) {
       console.error(err);
-      alert("Error connecting to the server.");
+      setError("Error connecting to the server.");
     }
   };
 
@@ -59,6 +66,8 @@ export default function Register() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+        {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+        {success && <p className="text-green-600 text-center mb-4">{success}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
