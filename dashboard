@@ -7,7 +7,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
 
-  // Redirect if not logged in
+  // Redirect if not logged in and load user info
   useEffect(() => {
     const loggedUser = localStorage.getItem("user");
     if (loggedUser) {
@@ -44,19 +44,20 @@ export default function Dashboard() {
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Logout Button */}
       <div className="flex justify-end mb-4">
-        <button
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-          onClick={() => {
-            localStorage.removeItem("user");
-            router.push("/login");
-          }}
-        >
-          Logout
-        </button>
+       <button
+  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+  onClick={() => {
+    localStorage.removeItem("user"); // clear logged-in user
+    router.push("/"); // redirect to home page
+  }}
+>
+  Logout
+</button>
+
       </div>
 
       <h1 className="text-2xl font-semibold mb-6 text-gray-800">
-        Welcome, {user.email}!
+        Welcome, {user.name || user.email}!
       </h1>
 
       {/* Cards */}
