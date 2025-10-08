@@ -1,0 +1,26 @@
+"use client";
+
+import * as React from "react";
+
+type UserType = {
+  name: string;
+  email: string;
+  [key: string]: any;
+};
+
+interface ProfileCardProps {
+  user: UserType;
+}
+
+const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
+  return (
+    <div className="absolute top-12 right-1/2 transform translate-x-1/2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+      <div className="p-4 flex flex-col gap-2">
+        <h3 className="text-lg font-bold text-gray-800">{user.name}</h3>
+        <p className="text-sm text-gray-600">{user.email}</p>
+      </div>
+    </div>
+  );
+};
+
+export default ProfileCard;
