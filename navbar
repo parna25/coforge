@@ -1,0 +1,116 @@
+"use client";
+
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import BoltIcon from "@mui/icons-material/Bolt";
+import dynamic from "next/dynamic";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import ProfileCard from "../components/ProfileCard";
+
+const Navbar = dynamic(() => Promise.resolve(ButtonAppBar), { ssr: false });
+export default Navbar;
+
+// Define a type for user
+type UserType = {
+  name: string;
+  email: string;
+  [key: string]: any;
+};
+
+function ButtonAppBar() {
+  const [user, setUser] = React.useState<UserType | null>(null);
+  const [showProfile, setShowProfile] = React.useState(false);
+
+  // ✅ Load user from localStorage as JSON
+  React.useEffect(() => {
+    const checkUser = () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (err) {
+          console.error("Failed to parse user:", err);
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+    };
+
+    // Initial load
+    checkUser();
+
+    // Poll for changes (login/logout)
+    const interval = setInterval(checkUser, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    setShowProfile(false);
+  };
+
+  return (
+    <Box sx={{ flexGrow: 1, position: "relative" }}>
+      <AppBar
+        position="static"
+        sx={{
+          background: "linear-gradient(90deg, #1e3c72, #2a5298)",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+        }}
+      >
+        <Toolbar>
+          {/* Logo */}
+          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+            <BoltIcon sx={{ fontSize: 28, color: "#FFD700" }} />
+          </IconButton>
+
+          {/* Title */}
+          <Typography
+            variant="h6"
+            sx={{
+              flexGrow: 1,
+              fontWeight: "bold",
+              letterSpacing: 1,
+              fontSize: "1.2rem",
+            }}
+          >
+            Electricity Billing Portal
+          </Typography>
+
+          {/* User icon */}
+          {user && (
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 1.5, position: "relative" }}
+            >
+              <FontAwesomeIcon
+                icon={faCircleUser}
+                style={{
+                  fontSize: "30px",
+                  color: "#FFD700",
+                  cursor: "pointer",
+                }}
+                onClick={() => setShowProfile((prev) => !prev)}
+              />
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "#fff", fontWeight: 500 }}
+              >
+                {user.name}
+              </Typography>
+
+              {/* Show ProfileCard */}
+              {showProfile && <ProfileCard user={user}  />}
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
+    </Box>
+  );
+}
