@@ -1,13 +1,15 @@
-// app/layout.tsx
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import { Providers } from "./providers";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Navbar />  {/* Navbar will appear on all pages */}
-        <main>{children}</main>
+        <Providers>
+          <Navbar />  {/* Always visible */}
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );
