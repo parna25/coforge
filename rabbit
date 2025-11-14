@@ -1,0 +1,41 @@
+using RabbitMQ.Client;
+using System;
+using System.Text;
+
+namespace RabbitMqDemo.Services
+{
+    public class RabbitMqProducer
+    {
+        private readonly ConnectionFactory _factory;
+
+        public RabbitMqProducer()
+        {
+            // Paste your CloudAMQP URL here
+            _factory = new ConnectionFactory()
+            {
+                Uri = new Uri("amqps://your_user:your_pass@your_host/your_vhost")
+            };
+        }
+
+        public void Send(string message)
+        {
+            using var connection = _factory.CreateConnection();
+            using var channel = connection.CreateModel();
+
+            channel.QueueDeclare(
+                queue: "demo-queue",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+
+            var body = Encoding.UTF8.GetBytes(message);
+
+            channel.BasicPublish(
+                exchange: "",
+                routingKey: "demo-queue",
+                basicProperties: null,
+                body: body);
+        }
+    }
+}
