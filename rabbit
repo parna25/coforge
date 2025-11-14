@@ -40,3 +40,7 @@ namespace RabbitMqDemo.Services
         }
     }
 }
+
+
+
+The type arguments for method 'IChannel.BasicPublishAsync<TProperties>(string, string, bool, TProperties, ReadOnlyMemory<byte>, CancellationToken)' cannot be inferred from the usage. Try specifying the type arguments explicitly.
