@@ -1,6 +1,7 @@
 using RabbitMQ.Client;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RabbitMqDemo.Services
 {
@@ -10,19 +11,18 @@ namespace RabbitMqDemo.Services
 
         public RabbitMqProducer()
         {
-            // Paste your CloudAMQP URL here
             _factory = new ConnectionFactory()
             {
                 Uri = new Uri("amqps://your_user:your_pass@your_host/your_vhost")
             };
         }
 
-        public void Send(string message)
+        public async Task SendAsync(string message)
         {
-            using var connection = _factory.CreateConnection();
-            using var channel = connection.CreateModel();
+            await using var connection = await _factory.CreateConnectionAsync();
+            await using var channel = await connection.CreateChannelAsync();
 
-            channel.QueueDeclare(
+            await channel.QueueDeclareAsync(
                 queue: "demo-queue",
                 durable: false,
                 exclusive: false,
@@ -31,9 +31,10 @@ namespace RabbitMqDemo.Services
 
             var body = Encoding.UTF8.GetBytes(message);
 
-            channel.BasicPublish(
+            await channel.BasicPublishAsync(
                 exchange: "",
                 routingKey: "demo-queue",
+                mandatory: false,
                 basicProperties: null,
                 body: body);
         }
