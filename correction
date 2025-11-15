@@ -1,0 +1,35 @@
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text;
+
+public class RabbitMqConsumer
+{
+    private readonly ConnectionFactory _factory;
+
+    public RabbitMqConsumer()
+    {
+        _factory = new ConnectionFactory()
+        {
+            Uri = new Uri("amqps://<your-cloudamqp-url>")
+        };
+    }
+
+    public async Task ReceiveMail()
+    {
+
+        using var connection = await _factory.CreateConnectionAsync();
+        using var channel = await connection.CreateChannelAsync();
+
+        await channel.QueueDeclareAsync("mail_queue", durable: true, exclusive: false, autoDelete: false);
+
+        var result = channel.BasicGet("mail_queue", autoAck: true);
+
+        if (result == null)
+        {
+            return "No mail available in queue.";
+        }
+
+        var message = Encoding.UTF8.GetString(result.Body.ToArray());
+        return message;
+    }
+}
